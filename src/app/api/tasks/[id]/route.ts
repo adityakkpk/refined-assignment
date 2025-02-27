@@ -4,13 +4,13 @@ import { Task } from "@/lib/models/task";
 import mongoose from "mongoose";
 
 export async function PUT(
-  req: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const id = (await params).id;
+    const { id } = await params;
 
     // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -20,10 +20,10 @@ export async function PUT(
       );
     }
 
-    const json = await req.json();
+    const json = await request.json();
 
     const task = await Task.findByIdAndUpdate(
-      new mongoose.Types.ObjectId(id),
+      id,
       { $set: json },
       { new: true }
     );
@@ -43,13 +43,13 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
 
-    const id = (await params).id;
+    const { id } = await params;
 
     // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -59,7 +59,7 @@ export async function DELETE(
       );
     }
 
-    const task = await Task.findByIdAndDelete(new mongoose.Types.ObjectId(id));
+    const task = await Task.findByIdAndDelete(id);
 
     if (!task) {
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
