@@ -8,7 +8,7 @@ export type Priority = "low" | "medium" | "high"
 export type Status = "todo" | "in-progress" | "done" | "timeout"
 
 export interface Task {
-  id: string
+  _id: string
   title: string
   description: string
   priority: Priority
@@ -41,12 +41,12 @@ function taskReducer(state: TaskState, action: TaskAction): TaskState {
     case "UPDATE_TASK":
       return {
         ...state,
-        tasks: state.tasks.map((task) => (task.id === action.task.id ? action.task : task)),
+        tasks: state.tasks.map((task) => (task._id === action.task._id ? action.task : task)),
       }
     case "DELETE_TASK":
       return {
         ...state,
-        tasks: state.tasks.filter((task) => task.id !== action.id),
+        tasks: state.tasks.filter((task) => task._id !== action.id),
       }
     case "SET_TASKS":
       return { ...state, tasks: action.tasks }

@@ -10,6 +10,7 @@ interface TaskColumnProps {
 }
 
 export default function TaskColumn({ title, tasks, status }: TaskColumnProps) {
+  console.log(tasks)
   return (
     <div className="flex flex-col rounded-lg bg-muted/50 p-4">
       <div className="mb-4 flex items-center justify-between">
@@ -17,8 +18,8 @@ export default function TaskColumn({ title, tasks, status }: TaskColumnProps) {
         <span className="rounded-full bg-primary/10 px-2 py-1 text-xs">{tasks.length}</span>
       </div>
       <div className="flex flex-col gap-3">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+        {tasks.map((task, idx) => (
+          <TaskCard key={idx} task={task} />
         ))}
       </div>
     </div>

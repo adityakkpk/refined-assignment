@@ -27,6 +27,8 @@ export default function TaskCard({ task }: TaskCardProps) {
   const { dispatch } = useTaskContext()
   const [isDeleting, setIsDeleting] = useState(false)
 
+  console.log("task: ", task)
+
   const priorityColors = {
     low: "bg-yellow-500/10 text-yellow-500",
     medium: "bg-blue-500/10 text-blue-500",
@@ -35,7 +37,7 @@ export default function TaskCard({ task }: TaskCardProps) {
 
   const handleStatusChange = async (newStatus: Status) => {
     try {
-      const response = await fetch(`/api/tasks/${task.id}`, {
+      const response = await fetch(`/api/tasks/${task._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -54,13 +56,13 @@ export default function TaskCard({ task }: TaskCardProps) {
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
-      const response = await fetch(`/api/tasks/${task.id}`, {
+      const response = await fetch(`/api/tasks/${task._id}`, {
         method: "DELETE",
       })
 
       if (!response.ok) throw new Error("Failed to delete task")
 
-      dispatch({ type: "DELETE_TASK", id: task.id })
+      dispatch({ type: "DELETE_TASK", id: task._id })
       toast("Task deleted successfully")
     } catch (error) {
       console.error("Failed to delete task:", error)
